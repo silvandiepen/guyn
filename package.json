@@ -1,8 +1,7 @@
 {
-  "name": "hello-world",
+  "name": "Guyn API",
   "version": "1.0.0",
-  "description": "netlify functions:create - hello world in typescript",
-  "main": "hello-world.ts",
+  "description": "",
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"

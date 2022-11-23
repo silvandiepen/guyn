@@ -1,7 +1,7 @@
 import { Handler } from "@netlify/functions";
 import { toHex, toCMYK, toRGB, toHSL } from "@sil/color";
 
-export const handler: Handler = async (event, context) => {
+export const handler: Handler = async (event:any) => {
   let input = "#cccccc";
   if (event.queryStringParameters) {
     const { color = input } = event.queryStringParameters;
