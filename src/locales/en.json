@@ -1,0 +1,16 @@
+{
+    "en":{
+        "color":{
+            "r": "Red",
+            "g": "Green",
+            "b": "Blue",
+            "c": "Cyan",
+            "m": "Magenta",
+            "y": "Yellow",
+            "k": "Black",
+            "h": "Hue",
+            "s": "Saturation",
+            "l": "Lightness"
+        }
+    }
+}
