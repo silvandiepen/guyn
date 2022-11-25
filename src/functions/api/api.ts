@@ -1,4 +1,4 @@
-import { Handler } from "@netlify/functions";
+import type { Handler } from "@netlify/functions";
 import {
   toHex,
   toCMYK,
@@ -8,10 +8,8 @@ import {
   toHSL,
   getBrightness,
   mix,
-  RGB,
-  HSL,
-  HEX,
 } from "@sil/color";
+import type { RGB, HSL, HEX } from "@sil/color";
 import { getName } from "./color-name";
 
 export const isHashtaglessHex = (value: string): boolean => {
@@ -85,7 +83,7 @@ export const handler: Handler = async (event: any) => {
     ten: matchingColor(color.hsl, 10),
   };
 
-const colorName = getName(input);
+  const colorName = getName(input);
 
   const output = {
     name: colorName,
@@ -107,4 +105,3 @@ const colorName = getName(input);
     body: JSON.stringify(output),
   };
 };
-

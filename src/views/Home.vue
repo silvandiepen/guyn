@@ -9,15 +9,14 @@ import ColorShades from "../components/ColorShades.vue";
 import ColorPicker from "../components/ColorPicker.vue";
 import InputRange from "../components/InputRange.vue";
 import {
-  HEX,
   isHex,
-  CMYK,
   rgbToHex,
   cmykToHex,
   hslToHex,
   instanceOfHSL,
   instanceOfRGB,
 } from "@sil/color";
+import type { HEX, CMYK } from "@sil/color";
 
 const block = ref("color");
 
@@ -134,12 +133,13 @@ const goToColor = (input: string) => {
     --color-text: ${colorData.text};  
     --color-text-contra: ${colorData.text_contra}; 
     --shadow: ${colorData.darken[2]};
-    --background: ${colorData.brightness > 50 ? colorData.darken[1] : colorData.lighten[1]}`"
+    --background: ${
+      colorData.brightness > 50 ? colorData.darken[1] : colorData.lighten[1]
+    }`"
   >
     <div :class="bemm()">
-    <ColorPicker :block="block" v-model="color"></ColorPicker>
+      <ColorPicker :block="block" v-model="color"></ColorPicker>
       <h1>{{ colorData.name }}</h1>
-    
 
       <article :class="classes('rgb', 'space')">
         <header :class="bemm('header')">
@@ -391,7 +391,6 @@ const goToColor = (input: string) => {
       background-color: white;
     }
   }
-
 
   &__controls {
     margin-top: 1em;

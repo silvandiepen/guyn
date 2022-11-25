@@ -1,10 +1,10 @@
 <template>
   <div :class="bemm('matches')">
-    <div :class="bemm('match')" v-for="key in Object.keys(items)" :key="key">
+    <div :class="bemm('match')" v-for="(key, idx) in Object.keys(items)" :key="idx">
       <div
         :class="bemm('match-item')"
-        v-for="(clr, key) in items[key]"
-        :key="key"
+        v-for="(clr, idy) in items[key]"
+        :key="idy"
         :style="`--color: ${clr}`"
         @click="onClick(clr)"
       ></div>
@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, PropType } from "vue";
 import { useBemm } from "bemm";
 
 const props = defineProps({
@@ -32,9 +31,6 @@ const props = defineProps({
 });
 const { bemm } = useBemm(props.block);
 
-onMounted(()=>{
-    console.log(props.items)
-})
 </script>
 
 <style lang="scss">

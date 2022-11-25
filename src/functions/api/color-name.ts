@@ -1,4 +1,5 @@
-import { HEX, RGB, hexToRgb } from "@sil/color";
+import { hexToRgb } from "@sil/color";
+import type { HEX, RGB } from "@sil/color";
 export const getName = (color: HEX) => {
   // Check if color exists
 

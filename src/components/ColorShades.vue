@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
+import type { PropType } from "vue";
 import { useBemm } from "bemm";
 
 const props = defineProps({
