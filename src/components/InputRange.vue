@@ -9,7 +9,13 @@
       :max="max"
     />
     <div :class="bemm('value')">
-        {{value}}
+      <input
+        :class="bemm('control2')"
+        type="number"
+        v-model="value"
+        :min="min"
+        :max="max"
+      />
     </div>
   </div>
 </template>
@@ -60,10 +66,23 @@ const value = computed({
   &__label {
     min-width: 25%;
   }
-  &__value{
+  &__value {
     width: 15%;
     padding: 0 1em;
   }
+  &__control2 {
+    color: var(--color-text);
+    background-color: transparent;
+    border-radius: 4px;
+    border: none;
+    padding: 0.5em;
+    &:focus {
+      outline: none;
+      background-color: var(--color-text);
+      color: var(--color-text-contra);
+    }
+  }
+
   &__control {
     -webkit-appearance: none;
     width: 100%;

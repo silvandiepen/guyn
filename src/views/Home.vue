@@ -8,15 +8,23 @@ import ColorMatches from "../components/ColorMatches.vue";
 import ColorShades from "../components/ColorShades.vue";
 import ColorPicker from "../components/ColorPicker.vue";
 import InputRange from "../components/InputRange.vue";
+
+import ColorPalette from "../components/ColorPalette.vue"
+
 import {
   isHex,
   rgbToHex,
   cmykToHex,
   hslToHex,
+  hsvToHex,
   instanceOfHSL,
+  instanceOfHSV,
   instanceOfRGB,
+  instanceOfCMYK,
+  RGB,
+  RGBA,
 } from "@sil/color";
-import type { HEX, CMYK } from "@sil/color";
+import type { HSL, HEX, CMYK, HSV } from "@sil/color";
 
 const block = ref("color");
 
@@ -30,6 +38,7 @@ const color = ref<string>((route.params.color as string) || "#000000");
 const newHex = ref<HEX>("#000000");
 const newRgb = ref({ r: "0", g: "0", b: "0" });
 const newHsl = ref({ h: "0", s: "0", l: "0" });
+const newHsv = ref({ h: "0", s: "0", v: "0" });
 const newCmyk = ref({ c: "0", m: "0", y: "0", k: "0" });
 
 const getColor = async () => {
@@ -46,27 +55,34 @@ const changeHex = () => {
     goToColor(newHex.value);
   }
 };
+
 const changeRgb = () => {
   const fixedRgb = {
-    r: parseInt(newRgb.value.r),
-    g: parseInt(newRgb.value.g),
-    b: parseInt(newRgb.value.b),
+    r: parseInt(newRgb.value.r) as RGB["r"],
+    g: parseInt(newRgb.value.g) as RGB["g"],
+    b: parseInt(newRgb.value.b) as RGB["b"],
   };
-  if (instanceOfRGB(fixedRgb)) {
-    const tempHex = rgbToHex(fixedRgb);
-    goToColor(tempHex);
-  }
+
+  if (instanceOfRGB(fixedRgb)) goToColor(rgbToHex(fixedRgb));
 };
+
 const changeHsl = () => {
   const fixedHsl = {
-    h: parseInt(newHsl.value.h) as Number,
-    s: parseInt(newHsl.value.s),
-    l: parseInt(newHsl.value.l),
+    h: parseInt(newHsl.value.h) as HSL["h"],
+    s: parseInt(newHsl.value.s) as HSL["s"],
+    l: parseInt(newHsl.value.l) as HSL["l"],
   };
-  if (instanceOfHSL(fixedHsl)) {
-    const tempHex = hslToHex(fixedHsl);
-    goToColor(tempHex);
-  }
+
+  if (instanceOfHSL(fixedHsl)) goToColor(hslToHex(fixedHsl));
+};
+const changeHsv = () => {
+  const fixedHsv = {
+    h: parseInt(newHsl.value.h) as HSV["h"],
+    s: parseInt(newHsl.value.s) as HSV["s"],
+    v: parseInt(newHsl.value.l) as HSV["v"],
+  };
+
+  if (instanceOfHSV(fixedHsv)) goToColor(hsvToHex(fixedHsv));
 };
 const changeCmyk = () => {
   // if (isCMYK(newCmyk.value)) {
@@ -76,7 +92,7 @@ const changeCmyk = () => {
     y: parseInt(newCmyk.value.y),
     k: parseInt(newCmyk.value.k),
   };
-  goToColor(cmykToHex(fixedCmyk as CMYK));
+  if (instanceOfCMYK(fixedCmyk)) goToColor(cmykToHex(fixedCmyk as CMYK));
   // }
 };
 
@@ -93,6 +109,11 @@ watch(
       h: `${colorData.value.hsl.h}`,
       s: `${colorData.value.hsl.s}`,
       l: `${colorData.value.hsl.l}`,
+    };
+    newHsv.value = {
+      h: `${colorData.value.hsv.h}`,
+      s: `${colorData.value.hsv.s}`,
+      v: `${colorData.value.hsv.v}`,
     };
     newCmyk.value = {
       c: `${colorData.value.cmyk.c}`,
@@ -137,6 +158,7 @@ const goToColor = (input: string) => {
       colorData.brightness > 50 ? colorData.darken[1] : colorData.lighten[1]
     }`"
   >
+  <ColorPalette :current="color" :onClick="goToColor" />
     <div :class="bemm()">
       <ColorPicker :block="block" v-model="color"></ColorPicker>
       <h1>{{ colorData.name }}</h1>
@@ -276,6 +298,42 @@ const goToColor = (input: string) => {
             :max="100"
             v-model="newHsl.l"
             @change="changeHsl"
+          />
+        </div>
+      </div>
+
+      <div :class="classes('hsv', 'space')">
+        <header :class="bemm('header')">
+          <h4>HSV</h4>
+          <div :class="bemm('code')">
+            hsl({{ colorData.hsv.h }}, {{ colorData.hsv.s }},
+            {{ colorData.hsv.v }})
+          </div>
+        </header>
+        <ul :class="bemm('list')">
+          <ColorItems :block="block" :color="colorData.hsv" />
+        </ul>
+        <div :class="bemm('controls')">
+          <InputRange
+            label="Hue"
+            :min="0"
+            :max="360"
+            v-model="newHsv.h"
+            @change="changeHsv"
+          />
+          <InputRange
+            label="Saturation"
+            :min="0"
+            :max="100"
+            v-model="newHsv.s"
+            @change="changeHsv"
+          />
+          <InputRange
+            label="Value"
+            :min="0"
+            :max="100"
+            v-model="newHsv.l"
+            @change="changeHsv"
           />
         </div>
       </div>

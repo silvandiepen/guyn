@@ -8,9 +8,11 @@ import {
   toHSL,
   getBrightness,
   mix,
+  getName,
+  toHSV,
 } from "@sil/color";
 import type { RGB, HSL, HEX } from "@sil/color";
-import { getName } from "./color-name";
+// import { getName } from "./color-name";
 
 export const isHashtaglessHex = (value: string): boolean => {
   if (typeof value !== "string") return false;
@@ -34,6 +36,7 @@ export const handler: Handler = async (event: any) => {
     rgb: toRGB(input),
     hex: toHex(input),
     hsl: toHSL(input),
+    hsv: toHSV(input),
     cmyk: toCMYK(input),
   };
 
@@ -41,18 +44,12 @@ export const handler: Handler = async (event: any) => {
   const lighten = [];
   const black = toRGB("#000000");
   const white = toRGB("#ffffff");
+
   for (let i = 0; i < 10; i++) {
     darken.push(rgbToHex(mix(color.rgb, black, i * 10) as RGB));
     lighten.push(rgbToHex(mix(color.rgb, white, i * 10) as RGB));
   }
 
-  const flatten = (input: number, max = 255): number => {
-    if (input / max > 1) {
-      return input - Math.floor(input / max) * max;
-    } else {
-      return input;
-    }
-  };
 
   const matchingColor = (base: HSL, sep = 0): HEX[] => {
     const colors: HEX[] = [];
@@ -83,10 +80,8 @@ export const handler: Handler = async (event: any) => {
     ten: matchingColor(color.hsl, 10),
   };
 
-  const colorName = getName(input);
-
   const output = {
-    name: colorName,
+    name: getName(input),
     ...color,
     text: getBrightness(input) > 50 ? "black" : "white",
     text_contra: getBrightness(input) > 50 ? "white" : "black",

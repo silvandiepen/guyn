@@ -25,6 +25,7 @@ const i18n = createI18n({
         h: "Hue",
         s: "Saturation",
         l: "Lightness",
+        v: "Value",
       },
     },
     nl: {
@@ -39,6 +40,7 @@ const i18n = createI18n({
         h: "Tint",
         s: "Verzadiging",
         l: "Lichtheid",
+        v: "Waarde"
       },
     },
   },
